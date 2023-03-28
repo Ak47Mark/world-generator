@@ -1,0 +1,16 @@
+body{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+.block{
+    display: flex;
+    height: 4px;
+    width: 4px;
+    color: transparent;
+}
+
+.line{
+    display: flex;
+}
