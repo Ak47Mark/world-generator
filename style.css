@@ -2,13 +2,80 @@ body{
     height: 100%;
     width: 100%;
     margin: 0;
+    background-color: black;
+    overflow: auto;
+}
+
+#screen{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+#world{
+    transform: rotateX(60deg) rotateZ(45deg);
 }
 
 .block{
+    display: block;
+    height: 32px;
+    min-width: 32px;
+    background-size: cover;
+    border: 1px solid #555;
+}
+#player{
+    background-color: rgba(0, 0, 0, 0.247);
+    border-radius: 50%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: relative;
+    height: 32px;
+    width: 30px;
     display: flex;
-    height: 4px;
-    width: 4px;
-    color: transparent;
+    z-index: 99;
+    box-shadow: 0px 0px 15px 0px black;
+
+}
+
+#player::after{
+    content: "";
+    background-image: url(img/player.png);
+    height: 142px;
+    min-width: 32px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    display: block;
+    margin-left: -51px;
+    margin-top: -105px;
+    transform: rotateX(0deg) rotateZ(315deg);
+}
+
+.grass{
+    /* background-image: url(img/grass.jpg); */
+}
+
+.water{
+    /* background-image: url(img/water.jpg); */
+}
+
+.sand{
+    /* background-image: url(img/sand.png); */
+}
+
+.shadow{
+    -webkit-filter: drop-shadow(5px 5px 5px #222);
+    filter: drop-shadow(5px 5px 5px #222);
+}
+
+.shadow::after{
+    contain: "a";
+}
+
+.block span{
+    display: none;
 }
 
 .line{
