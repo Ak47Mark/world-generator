@@ -8,10 +8,14 @@
     <title>New map</title>
 </head>
 <body>
+    <div id="info" class="gui-element"></div>
     <div id="screen">
         <div id="display">
             <div id="world">
-                <div id="player" class="shadow"></div>
+                <!-- <div id="redbox"></div> -->
+                <div id="player" class="shadow">
+                    <div class="name-tag">Player 1</div>
+                </div>
                 <div id="map"></div>
             </div>
         </div>
@@ -19,5 +23,6 @@
     <script src='./perlin.js'></script>
     <script type="text/javascript" src="./generator.js"></script>
     <script type="text/javascript" src="./controll.js"></script>
+    <script type="text/javascript" src="./game.js"></script>
 </body>
 </html>

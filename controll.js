@@ -1,10 +1,12 @@
 const playerPos = {x: 8, y: 8};
+const cameraPos = {x: 0, y: 0};
 const player = document.querySelector("#player");
 const up = "KeyW";
 const down = "KeyS";
 const left = "KeyA";
 const right = "KeyD";
-const stepSize = 0.1;
+const shift = "ShiftLeft";
+const speed = 0.1;
 const footsptepGrass = new Audio("sounds/footstep.wav");
 const footsptepWater1 = new Audio("sounds/footstep-water-1.wav");
 const footsptepWater2 = new Audio("sounds/footstep-water-2.wav");
@@ -18,6 +20,7 @@ var upKeyPressed = false;
 var downKeyPressed = false;
 var leftKeyPressed = false;
 var rigtKeyPressed = false;
+var fhiftKeyPressed = false;
 
 document.addEventListener("keydown", function(event) {
   birds.play();
@@ -34,6 +37,10 @@ document.addEventListener("keydown", function(event) {
   if (event.code === down) {
     downKeyPressed = true;
   }
+  if (event.code === shift) {
+    fhiftKeyPressed = true;
+  }
+
 });
 
 document.addEventListener("keyup", function(event) {
@@ -49,24 +56,39 @@ document.addEventListener("keyup", function(event) {
     if (event.code === up) {
       upKeyPressed = false;
     }
+    if (event.code === shift) {
+      fhiftKeyPressed = false;
+    }
 });
 
-setInterval(function() {
+function movement() {
+
+  let walkspeed = 0;
+  if(fhiftKeyPressed) {
+    walkspeed = 0.5;
+  }else{
+    walkspeed = speed;
+  }
+
   if (upKeyPressed) {
-    playerPos.x -= stepSize; //fel
-    playerPos.y -= stepSize;
+    playerPos.x -= walkspeed; //fel
+    playerPos.y -= walkspeed;
+    cameraPos.x += walkspeed;
   }
   if (downKeyPressed) {
-    playerPos.x += stepSize; //le
-    playerPos.y += stepSize;
+    playerPos.x += walkspeed; //le
+    playerPos.y += walkspeed;
+    cameraPos.x -= walkspeed;
   }
   if (leftKeyPressed) {
-    playerPos.y += stepSize; //bal
-    playerPos.x -= stepSize;
+    playerPos.y += walkspeed; //bal
+    playerPos.x -= walkspeed;
+    cameraPos.y += walkspeed;
   }
   if (rigtKeyPressed) {
-    playerPos.y -= stepSize; //jobb
-    playerPos.x += stepSize;
+    playerPos.y -= walkspeed; //jobb
+    playerPos.x += walkspeed;
+    cameraPos.y -= walkspeed;
   }
 
   if( upKeyPressed || downKeyPressed || leftKeyPressed || rigtKeyPressed){
@@ -82,18 +104,15 @@ setInterval(function() {
 
   player.style.left = Math.round(playerPos.x*32) + "px";
   player.style.top = Math.round(playerPos.y*32) + "px";
-  camera();
-}, 50);
+}
 
-setInterval(function() {
-    console.log(playerPos.x, playerPos.y);
+function extendMap() {
     if(playerPos.x > Object.keys(map[Math.floor(playerPos.y)]).length - 3){
         console.log("X");
         newX = Math.floor(playerPos.x/16)*16 +16;
         newY = Math.floor(playerPos.y/16)*16;
         generate(newX, newY);
         draw();
-        console.log(map);
     }
     if(playerPos.y > Object.keys(map).length - 3){
         console.log(map[Math.floor(playerPos.y)][Math.floor(playerPos.x)]);
@@ -101,23 +120,52 @@ setInterval(function() {
         newY = Math.floor(playerPos.y/16)*16 +16;
         generate(newX, newY);
         draw();
-        console.log(map);
     }
-},500)
+}
 
-function camera(){
+function cameraPosition() {
   let camerax = 300;
   let cameray = 515;
   let display = document.querySelector('#display');
 
-  //camerax += Math.sqrt(Math.pow(playerPos.y * 32, 2) + Math.pow(playerPos.x * 32, 2)); //playerPos.x;
-  //cameray += Math.sqrt(Math.pow(playerPos.y * 32, 2) + Math.pow(playerPos.x * 32, 2)); //playerPos.x;
+  display.style.top = cameraPos.x * 32 * 0.7 + camerax + "px";
+  display.style.left = cameraPos.y * 32 * 1.525 + cameray + "px";
 
-  camerax -= playerPos.x * 32;
-  cameray -= playerPos.y * 32;
+}
+
+function camera_old(){
+  let camerax = 0;//300;
+  let cameray = 0;//515;
+  // let display = document.querySelector('#display');
+  let display = document.querySelector('#redbox');
   
-  display.style.marginTop = camerax + "px";
-  display.style.marginLeft = cameray + "px";
+  let camX = display.style.top;
+  let camY = display.style.lseft;
+ 
+ let camera = {
+   x: camX.substring(0, camX.length-2),
+   y: camY.substring(0, camY.length-2)
+  };
+
+  let diffX = playerPos.x * 32 - camera.x;
+  let diffY = playerPos.y * 32 - camera.y;
+
+  let length = Math.sqrt(diffX * diffX + diffY * diffY);
+  let direction = Math.atan2(diffY, diffX);
+
+  console.log("diff: ",diffX, diffY);
+  console.log(direction);
+
+  let rotatedX = length * (Math.cos(direction - Math.PI / 4));
+  let rotatedY = length * (Math.sin(direction - Math.PI / 4));
+
+  let newCameraX = camerax + playerPos.x - rotatedX;
+  let newCameraY = cameray + playerPos.y - rotatedY;
+
+  console.log(newCameraX, newCameraY);
+
+  display.style.top = newCameraX + "px";
+  display.style.left = newCameraY + "px";
   
 
 }
