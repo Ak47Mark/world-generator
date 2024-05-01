@@ -5,14 +5,22 @@ setInterval(function() {
     movement();
     extendMap();
     cameraPosition();
+    showInfo();
     fpsCounter++;
 }, 1000 / fps);
 
 setInterval(function() {
-    showInfo();
+    showFPS();
     fpsCounter = 0;
 }, 1000);
 
+function showFPS() {
+    document.getElementById("fps").innerHTML = fpsCounter + " FPS";
+}
+
 function showInfo() {
-    document.getElementById("info").innerHTML = fpsCounter + " FPS";
+    var info = "x: " + Math.floor(playerPos.x) + "<br/>"
+            + "y: " + Math.floor(playerPos.y);
+            
+    document.getElementById("data").innerHTML = info;
 }

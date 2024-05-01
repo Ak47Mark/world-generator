@@ -1,5 +1,6 @@
 const playerPos = {x: 8, y: 8};
 const cameraPos = {x: 0, y: 0};
+const maxMapSize = 1 * 16;
 const player = document.querySelector("#player");
 const up = "KeyW";
 const down = "KeyS";
@@ -71,24 +72,36 @@ function movement() {
   }
 
   if (upKeyPressed) {
-    playerPos.x -= walkspeed; //fel
-    playerPos.y -= walkspeed;
-    cameraPos.x += walkspeed;
+    if(playerPos.x > 1){
+      playerPos.x -= walkspeed; //fel
+    }
+    if(playerPos.y > 1){
+      playerPos.y -= walkspeed;
+    }
   }
   if (downKeyPressed) {
-    playerPos.x += walkspeed; //le
-    playerPos.y += walkspeed;
-    cameraPos.x -= walkspeed;
+    if(playerPos.x < maxMapSize){
+      playerPos.x += walkspeed; //le
+    }
+    if(playerPos.y < maxMapSize){
+      playerPos.y += walkspeed;
+    }
   }
   if (leftKeyPressed) {
-    playerPos.y += walkspeed; //bal
-    playerPos.x -= walkspeed;
-    cameraPos.y += walkspeed;
+    if(playerPos.y < maxMapSize ){
+      playerPos.y += walkspeed; //bal
+    }
+    if(playerPos.x > 1){
+      playerPos.x -= walkspeed;
+    }
   }
   if (rigtKeyPressed) {
-    playerPos.y -= walkspeed; //jobb
-    playerPos.x += walkspeed;
-    cameraPos.y -= walkspeed;
+    if(playerPos.y > 1){
+      playerPos.y -= walkspeed; //jobb
+    }
+    if(playerPos.x < maxMapSize){
+      playerPos.x += walkspeed;
+    }
   }
 
   if( upKeyPressed || downKeyPressed || leftKeyPressed || rigtKeyPressed){
