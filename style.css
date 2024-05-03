@@ -92,24 +92,24 @@ body{
 }
 
 .grass{
-    /* background-image: url(img/grass.jpg); */
+    background-image: url(img/grass.jpg);
 }
 
 .water{
-    /* background-image: url(img/water.jpg); */
+    background-image: url(img/water.jpg);
 }
 
 .sand{
-    /* background-image: url(img/sand.png); */
+    background-image: url(img/sand.png);
 }
 
 .tree::before{
     content: "";
-    margin-top: -205px;
-    margin-left: -155px;
+    margin-top: -284px;
+    margin-left: -204px;
     background-image: url(img/tree.webp);
-    height: 272px;
-    width: 168px;
+    height: 370px;
+    width: 210px;
     background-size: 100% 100%;
     background-repeat: no-repeat;
     display: block;

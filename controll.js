@@ -3,7 +3,7 @@ const cameraPos = {x: 0, y: 0};
 const mousePos = {x: 0, y: 0}
 const startPosMultiple = 1;
 const maxMapSize = 30 * 16;
-const seeDistance = 15;
+const seeDistance = 40;
 const mouseSeeDistance = 200;
 const player = document.querySelector("#player");
 const up = "KeyW";
@@ -12,6 +12,7 @@ const left = "KeyA";
 const right = "KeyD";
 const shift = "ShiftLeft";
 const speed = 0.1;
+const sprintSpeed = 2;
 const footsptepGrass = new Audio("sounds/footstep.wav");
 const footsptepWater1 = new Audio("sounds/footstep-water-1.wav");
 const footsptepWater2 = new Audio("sounds/footstep-water-2.wav");
@@ -73,7 +74,7 @@ function movement() {
 
   let walkspeed = 0;
   if(fhiftKeyPressed) {
-    walkspeed = 0.5;
+    walkspeed = speed * sprintSpeed;
   }else{
     walkspeed = speed;
   }
