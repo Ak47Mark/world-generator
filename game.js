@@ -21,6 +21,6 @@ function showFPS() {
 function showInfo() {
     var info = "x: " + Math.floor(playerPos.x) + "<br/>"
             + "y: " + Math.floor(playerPos.y);
-            
+
     document.getElementById("data").innerHTML = info;
 }

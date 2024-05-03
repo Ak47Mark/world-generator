@@ -1,6 +1,10 @@
 const playerPos = {x: 8, y: 8};
 const cameraPos = {x: 0, y: 0};
-const maxMapSize = 1 * 16;
+const mousePos = {x: 0, y: 0}
+const startPosMultiple = 1;
+const maxMapSize = 30 * 16;
+const seeDistance = 15;
+const mouseSeeDistance = 200;
 const player = document.querySelector("#player");
 const up = "KeyW";
 const down = "KeyS";
@@ -22,6 +26,9 @@ var downKeyPressed = false;
 var leftKeyPressed = false;
 var rigtKeyPressed = false;
 var fhiftKeyPressed = false;
+
+playerPos.x = playerPos.x * startPosMultiple;
+playerPos.y = playerPos.y * startPosMultiple;
 
 document.addEventListener("keydown", function(event) {
   birds.play();
@@ -73,7 +80,7 @@ function movement() {
 
   if (upKeyPressed) {
     if(playerPos.x > 1){
-      playerPos.x -= walkspeed; //fel
+      playerPos.x -= walkspeed;     //fel
     }
     if(playerPos.y > 1){
       playerPos.y -= walkspeed;
@@ -81,7 +88,7 @@ function movement() {
   }
   if (downKeyPressed) {
     if(playerPos.x < maxMapSize){
-      playerPos.x += walkspeed; //le
+      playerPos.x += walkspeed;     //le
     }
     if(playerPos.y < maxMapSize){
       playerPos.y += walkspeed;
@@ -89,7 +96,7 @@ function movement() {
   }
   if (leftKeyPressed) {
     if(playerPos.y < maxMapSize ){
-      playerPos.y += walkspeed; //bal
+      playerPos.y += walkspeed;    //bal
     }
     if(playerPos.x > 1){
       playerPos.x -= walkspeed;
@@ -97,7 +104,7 @@ function movement() {
   }
   if (rigtKeyPressed) {
     if(playerPos.y > 1){
-      playerPos.y -= walkspeed; //jobb
+      playerPos.y -= walkspeed;   //jobb
     }
     if(playerPos.x < maxMapSize){
       playerPos.x += walkspeed;
@@ -119,7 +126,7 @@ function movement() {
   player.style.top = Math.round(playerPos.y*32) + "px";
 }
 
-function extendMap() {
+function extendMap_old() {
     if(playerPos.x > Object.keys(map[Math.floor(playerPos.y)]).length - 3){
         console.log("X");
         newX = Math.floor(playerPos.x/16)*16 +16;
@@ -136,49 +143,60 @@ function extendMap() {
     }
 }
 
-function cameraPosition() {
-  let camerax = 300;
-  let cameray = 515;
-  let display = document.querySelector('#display');
-
-  display.style.top = cameraPos.x * 32 * 0.7 + camerax + "px";
-  display.style.left = cameraPos.y * 32 * 1.525 + cameray + "px";
-
+function extendMap(){
+  generateCircleCoordinates(Math.floor(playerPos.x), Math.floor(playerPos.y), seeDistance).forEach((coord) => {
+    if(coord.x > 0 && coord.y > 0 && coord.x < maxMapSize && coord.y < maxMapSize){ //TODO: negatív irányba is csak akkor belassul
+      newX = Math.floor(coord.x/16)*16;
+      newY = Math.floor(coord.y/16)*16;
+      try{
+        if(typeof map[coord.y][coord.x] == 'undefined'){
+          generate(newX, newY);
+          draw();
+        }
+      }catch(e){
+        generate(newX, newY);
+        draw();
+      }
+    }
+  });
 }
 
-function camera_old(){
-  let camerax = 0;//300;
-  let cameray = 0;//515;
-  // let display = document.querySelector('#display');
-  let display = document.querySelector('#redbox');
+function generateCircleCoordinates(x, y, distance) {
+  const coordinates = [];
+  for (let i = x - distance; i <= x + distance; i++) {
+    for (let j = y - distance; j <= y + distance; j++) {
+      if (Math.sqrt((i - x) ** 2 + (j - y) ** 2) <= distance) {
+        coordinates.push({ x: i, y: j });
+      }
+    }
+  }
+  return coordinates;
+}
+
+let screen = document.getElementById('screen');
+screen.addEventListener('mousemove', function(event) {
+    mousePos.x = event.clientX;
+    mousePos.y = event.clientY;
+});
+
+function cameraPosition() {
+  let player = document.getElementById('player').getBoundingClientRect();
+  // let position = element.getBoundingClientRect();
+  let display = document.querySelector('#display');
+  let displayPos = display.getBoundingClientRect();
+  let x = Math.floor(player.left - displayPos.left);
+  let y = Math.floor(player.top - displayPos.top);
+
+  let windowWidth = window.innerWidth;
+  let screenCenterX = window.innerWidth / 2;
+  let distanceFromCenterX = mousePos.x - screenCenterX;
+  let normalizedValueX = (distanceFromCenterX / screenCenterX) * mouseSeeDistance * -1;
   
-  let camX = display.style.top;
-  let camY = display.style.lseft;
- 
- let camera = {
-   x: camX.substring(0, camX.length-2),
-   y: camY.substring(0, camY.length-2)
-  };
-
-  let diffX = playerPos.x * 32 - camera.x;
-  let diffY = playerPos.y * 32 - camera.y;
-
-  let length = Math.sqrt(diffX * diffX + diffY * diffY);
-  let direction = Math.atan2(diffY, diffX);
-
-  console.log("diff: ",diffX, diffY);
-  console.log(direction);
-
-  let rotatedX = length * (Math.cos(direction - Math.PI / 4));
-  let rotatedY = length * (Math.sin(direction - Math.PI / 4));
-
-  let newCameraX = camerax + playerPos.x - rotatedX;
-  let newCameraY = cameray + playerPos.y - rotatedY;
-
-  console.log(newCameraX, newCameraY);
-
-  display.style.top = newCameraX + "px";
-  display.style.left = newCameraY + "px";
+  let windowHeight = window.innerHeight;
+  let screenCenterY = window.innerHeight / 2;
+  let distanceFromCenterY = mousePos.y - screenCenterY;
+  let normalizedValueY = (distanceFromCenterY / screenCenterX) * mouseSeeDistance * -1;
   
-
+  display.style.top = (y * -1 + windowHeight / 2 + normalizedValueY) + "px";
+  display.style.left = (x * -1 + windowWidth / 2 + normalizedValueX) + "px";
 }

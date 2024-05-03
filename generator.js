@@ -9,20 +9,23 @@ var plus = 0;
 var minus = 0;
 var zero = 0;
 generate(0,0);
-console.log(map);
-// console.log(map);
 draw();
-console.log(perlin.get(0,0));
 
 function draw(){
     let drawmap = ""
     for (var y = 0; y < Object.keys(map).length; y++) {
-        let row = "<div class='line'>"
-        for (var x = 0; x < Object.keys(map[y]).length; x++) {
-            row += createBlockDOM(x, y);
+        try{
+
+            let row = "<div class='line'>"
+            let lastKey = Object.keys(map[y])[Object.keys(map[y]).length - 1];
+            for (var x = 0; x < lastKey; x++) {
+                row += createBlockDOM(x, y);
+            }
+            row += "</div>";
+            drawmap += row;
+        }catch(e){
+            console.log("Error:", e);
         }
-        row += "</div>";
-        drawmap += row;
     }
     mapdiv.innerHTML = drawmap;
 }
@@ -40,8 +43,16 @@ function toType(num){
         return "sand"
     }
 
-    if(num >= 20){
+    if(num >= 20 && num <= 30){
         return "grass"
+    }
+
+    if(num > 25){
+        if(Math.random() < (num - 25) / (max - 25)){
+            return "tree";
+        } else {
+            return "grass";
+        }
     }
 }
 
@@ -83,9 +94,11 @@ function toColor(num){
 }
 
 function generate(initX,initY){
+    if(initX < 0 || initY < 0){   //TODO: Lehessen negatív érték is
+        return false;
+    }
     for (var y = initY; y < size+initY; y++) {
         if(typeof map[y] === "undefined"){
-            console.log(typeof map[y]);
             map[y] = {};
         }
         for (var x = initX; x < size+initX; x++) {
