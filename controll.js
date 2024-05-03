@@ -127,23 +127,6 @@ function movement() {
   player.style.top = Math.round(playerPos.y*32) + "px";
 }
 
-function extendMap_old() {
-    if(playerPos.x > Object.keys(map[Math.floor(playerPos.y)]).length - 3){
-        console.log("X");
-        newX = Math.floor(playerPos.x/16)*16 +16;
-        newY = Math.floor(playerPos.y/16)*16;
-        generate(newX, newY);
-        draw();
-    }
-    if(playerPos.y > Object.keys(map).length - 3){
-        console.log(map[Math.floor(playerPos.y)][Math.floor(playerPos.x)]);
-        newX = Math.floor(playerPos.x/16)*16;
-        newY = Math.floor(playerPos.y/16)*16 +16;
-        generate(newX, newY);
-        draw();
-    }
-}
-
 function extendMap(){
   generateCircleCoordinates(Math.floor(playerPos.x), Math.floor(playerPos.y), seeDistance).forEach((coord) => {
     if(coord.x > 0 && coord.y > 0 && coord.x < maxMapSize && coord.y < maxMapSize){ //TODO: negatív irányba is csak akkor belassul
