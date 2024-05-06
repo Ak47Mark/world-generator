@@ -24,53 +24,46 @@ function draw(){
             row += "</div>";
             drawmap += row;
         }catch(e){
-            console.log("Error:", e);
+            console.log("Error:", map[y][x]);
         }
     }
     mapdiv.innerHTML = drawmap;
 }
 
 function createBlockDOM(x, y){
-    return "<div class='block "+toType(map[y][x])+"' style='background-color: "+toColor(map[y][x])+";'><span>"+map[y][x] +"</span></div>";
+    return "<div class='block "+toType(x,y)+" "+toObject(x, y)+"' style='background-color: "+toColor(map[y][x].weight)+";'><span>"+map[y][x].weight +"</span></div>";
 }
 
-function toType(num){
-    if(num < 5){
+function toType(x, y){
+    let weight = map[y][x].weight;
+    if(weight <= -15){
         return "water"
     }
 
-    if(num < 20){
+    if(weight <= 0 && weight > -15){
+        return "water"
+    }
+
+    if(weight > 0 && weight < 3){
         return "sand"
     }
 
-    if(num >= 20 && num <= 30){
+    if(weight >= 3){
         return "grass"
     }
-
-    if(num > 25){
-        if(Math.random() < (num - 25) / (max - 25)){
-            return "tree";
-        } else {
-            return "grass";
-        }
-    }
 }
 
-function edgeSmooting(){
-    for (var y = 0; y < size; y++) {
-        for (var x = 0; x < size; x++) {
-            map[y][x] = smooter(y,x);
+function toObject(x, y){
+    let object = map[y][x].objectID;
+    if(object == null){
+        return "";
+    }
+
+    for (var i = 0; i < objtype.length; i++) {
+        if (objtype[i].id == object) {
+            return objtype[i].name;
         }
     }
-}
-
-function smooter(x,y){
-    if(!(x == min || y == min || x >= max-1 || y >= max-1)){  
-        var avrage = (map[x-1][y-1] + map[x-1][y] + map[x-1][y+1] + map[x][y-1] + map[x][y+1] + map[x+1][y-1] + map[x+1][y] + map[x+1][y+1])/8;
-        return Math.round(avrage);
-    }
-    return  map[x][y];
-
 }
 
 function toColor(num){
@@ -102,7 +95,32 @@ function generate(initX,initY){
             map[y] = {};
         }
         for (var x = initX; x < size+initX; x++) {
-            map[y][x] = parseInt((perlin.get(y / max, x / max)) * max);
+            let weight = parseInt((perlin.get(y / max, x / max)) * max);
+            map[y][x] = {
+                            weight: weight,
+                            objectID: generateObjectID(weight)
+                        }
         }
     }
+}
+
+function generateObjectID(weight) {
+    var obj = objtype;
+    var filteredObjects = [];
+    for (var i = 0; i < obj.length; i++) {
+        if (obj[i].minWeight <= weight && obj[i].maxWeight >= weight) {
+            filteredObjects.push(obj[i]);
+        }
+    }
+    if (filteredObjects.length == 0) {
+        return null;
+    }
+    var randomIndex = Math.floor(Math.random() * filteredObjects.length);
+    var randomObject = filteredObjects[randomIndex];
+    var randomID = randomObject.id;
+    if(randomObject.chance > Math.random()){
+        return randomID;
+    }
+
+    return null;
 }

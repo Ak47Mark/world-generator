@@ -47,7 +47,7 @@ body{
     height: 32px;
     min-width: 32px;
     background-size: cover;
-    border: 1px solid #ffffff1e;
+    border: 1px solid #ffffff00;
 }
 
 .block:hover{
@@ -101,6 +101,20 @@ body{
 
 .sand{
     background-image: url(img/sand.png);
+}
+
+.tallgrass::before{
+    content: "";
+    margin-top: -43px;
+    margin-left: -25px;
+    background-image: url(img/Grass.webp);
+    height: 80px;
+    width: 50px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    display: block;
+    position: absolute;
+    transform: rotateX(0deg) rotateZ(315deg);
 }
 
 .tree::before{

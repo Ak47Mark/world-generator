@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "name": "tree",
+        "image": "tree.jpg",
+        "height": 250,
+        "width": 250,
+        "weightMin": 25,
+        "weightMayx": 25,
+        "chance": 0.5 
+    },
+    {
+        "id": 2,
+        "name": "grass",
+        "image": "tree.jpg",
+        "height": 250,
+        "width": 250,
+        "weightMin": 15,
+        "weightMayx": 30,
+        "chance": 0.8 
+    }
+]

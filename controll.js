@@ -2,7 +2,7 @@ const playerPos = {x: 8, y: 8};
 const cameraPos = {x: 0, y: 0};
 const mousePos = {x: 0, y: 0}
 const startPosMultiple = 1;
-const maxMapSize = 30 * 16;
+const maxMapSize = 999 * 16;
 const seeDistance = 40;
 const mouseSeeDistance = 200;
 const player = document.querySelector("#player");
@@ -113,7 +113,7 @@ function movement() {
   }
 
   if( upKeyPressed || downKeyPressed || leftKeyPressed || rigtKeyPressed){
-    if(map[Math.floor(playerPos.y)][Math.floor(playerPos.x)] > 1){
+    if(map[Math.floor(playerPos.y)][Math.floor(playerPos.x)].weight > 1){
       footsptepGrass.play();
     }else{
       footsptepWater1.play();
