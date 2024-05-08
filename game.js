@@ -1,11 +1,13 @@
 const fps = 30;
-fpsCounter = 0;
+let debugMode = false;
+let fpsCounter = 0;
 
 setInterval(function() {
     movement();
     extendMap();
     cameraPosition();
     showInfo();
+    debug();
     fpsCounter++;
 }, 1000 / fps);
 
@@ -23,4 +25,10 @@ function showInfo() {
             + "y: " + Math.floor(playerPos.y);
 
     document.getElementById("data").innerHTML = info;
+}
+
+function debug() {
+    if (debugMode) {
+        console.log("playerPos: " + playerPos.x + " " + playerPos.y);
+    }
 }

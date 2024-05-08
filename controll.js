@@ -1,9 +1,10 @@
-const playerPos = {x: 8, y: 8};
+const playerPos = {x: 20, y: 20};
 const cameraPos = {x: 0, y: 0};
 const mousePos = {x: 0, y: 0}
+const chunkSize = 4;
 const startPosMultiple = 1;
 const maxMapSize = 999 * 16;
-const seeDistance = 40;
+const seeDistance = 20;
 const mouseSeeDistance = 200;
 const player = document.querySelector("#player");
 const up = "KeyW";
@@ -130,8 +131,8 @@ function movement() {
 function extendMap(){
   generateCircleCoordinates(Math.floor(playerPos.x), Math.floor(playerPos.y), seeDistance).forEach((coord) => {
     if(coord.x > 0 && coord.y > 0 && coord.x < maxMapSize && coord.y < maxMapSize){ //TODO: negatív irányba is csak akkor belassul
-      newX = Math.floor(coord.x/16)*16;
-      newY = Math.floor(coord.y/16)*16;
+      newX = Math.floor(coord.x/chunkSize)*chunkSize;
+      newY = Math.floor(coord.y/chunkSize)*chunkSize;
       try{
         if(typeof map[coord.y][coord.x] == 'undefined'){
           generate(newX, newY);
