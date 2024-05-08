@@ -13,29 +13,40 @@ draw();
 
 function draw(){
     let drawmap = ""
-    for (var y = 0; y < Object.keys(map).length; y++) {
-        try{
+    for (var y = Object.keys(map).sort((a, b) => a-b )[0]; y < Object.keys(map).sort((a, b) => a-b ).reverse()[0]; y++) {
+       // try{
 
-            let row = "<div class='line'>"
-            let lastKey = Object.keys(map[y])[Object.keys(map[y]).length - 1];
-            for (var x = 0; x < lastKey; x++) {
+            let row = "<div class='line' y='"+y+"'>"
+            let firstKey =  0;//Object.keys(map[y]).sort((a, b) => a-b )[0];
+            let lastKey = Object.keys(map[y]).sort((a, b) => a-b ).reverse()[0];
+            for (var x = firstKey; x < lastKey; x++) {
                 row += createBlockDOM(x, y);
             }
             row += "</div>";
             drawmap += row;
-        }catch(e){
+        /*}catch(e){
             console.log("Error:", map[y][x]);
-        }
+        }*/
     }
     mapdiv.innerHTML = drawmap;
 }
 
 function createBlockDOM(x, y){
-    return "<div class='block "+toType(x,y)+" "+toObject(x, y)+"' style='background-color: "+toColor(map[y][x].weight)+";'><span>"+map[y][x].weight +"</span></div>";
+    return "<div x='"+x+"' y='"+y+"' class='block "+toType(x,y)+" "+toObject(x, y)+"'><span></span></div>";
 }
 
 function toType(x, y){
-    let weight = map[y][x].weight;
+    let weight;
+    try{
+        weight = map[y][x].weight;      
+    }catch(e){
+        console.log("Error:", map[y][x]);
+        weight = "error";
+    }
+    if(weight == "error"){
+        return "error"
+    }
+
     if(weight <= -15){
         return "water"
     }
@@ -54,7 +65,13 @@ function toType(x, y){
 }
 
 function toObject(x, y){
-    let object = map[y][x].objectID;
+    let object;
+    try{
+        object = map[y][x].objectID;
+    }catch(e){
+        console.log("Error:", map[y][x]);
+        object = null;
+    }
     if(object == null){
         return "";
     }
@@ -87,7 +104,7 @@ function toColor(num){
 }
 
 function generate(initX,initY){
-    if(initX < 0 || initY < 0){   //TODO: Lehessen negatív érték is
+    if(initX < 0 || initY < 0 /*|| initX < maxMapSize || initY < maxMapSize*/){   //TODO: Lehessen negatív érték is
         return false;
     }
     for (var y = initY; y < size+initY; y++) {
@@ -123,4 +140,30 @@ function generateObjectID(weight) {
     }
 
     return null;
+}
+
+async function loadBlock(tx, ty, fx = 0, fy = 0){
+    return new Promise(async (resolve, reject) => {
+        for(var i = fy; i <= ty; i=i+chunkSize){
+            for(var j = fx; j <= tx; j=j+chunkSize){
+                generate(i,j);
+            }
+            var percante = Math.round(i/ty*100);
+            window.requestAnimationFrame(() => {
+                document.querySelector("#loadBarSpan").style.width = percante + "%";
+            });
+            await sleep();
+        }
+        resolve();
+    });
+}
+
+async function sleep(delay = 0) {
+    return new Promise(async (resolve) => setTimeout(resolve, 0));
+}
+
+function updateWidth(percante) {
+    window.requestAnimationFrame(() => {
+        document.querySelector("#loadBarSpan").style.width = percante + "%";
+    });
 }

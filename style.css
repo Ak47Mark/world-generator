@@ -91,15 +91,22 @@ body{
     transform: rotateX(0deg) rotateZ(315deg);
 }
 
+.error{
+    background-color:#ff00bf;
+}
+
 .grass{
+    background-color:#029132;
     background-image: url(img/grass.jpg);
 }
 
 .water{
+    background-color:#113fd4;
     background-image: url(img/water.jpg);
 }
 
 .sand{
+    background-color:#f3e2ac;
     background-image: url(img/sand.png);
 }
 
@@ -155,4 +162,40 @@ body{
     width: 100vw;
     position: fixed;
     z-index: 100;
+}
+
+#loadScreen{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: #000000;
+    z-index: 9999;
+    position: absolute;
+}
+
+#loadScreen img{
+    filter: grayscale(100%) contrast(1000%);
+    -webkit-filter: grayscale(100%) contrast(1000%);
+    -moz-filter: grayscale(100%) contrast(1000%);
+    height: 160px;
+    margin-bottom: 30px;
+}
+
+#loadScreen #loadBar{
+    height: 5px;
+    width: 200px;
+    padding: 2px;
+    border: #fff 1px solid;
+}
+
+#loadScreen #loadBarSpan{
+    display: block;
+    height: 5px;
+    width: 0%;
+    background-color: #fff;
 }

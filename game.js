@@ -1,15 +1,20 @@
 const fps = 30;
+const mapSize = maxMapSize;
 let debugMode = false;
 let fpsCounter = 0;
+let generator = false;
 
-setInterval(function() {
+loadGame();
+
+function repeatOften() {
     movement();
-    extendMap();
+    // if(generator){extendMap()}
     cameraPosition();
     showInfo();
     debug();
     fpsCounter++;
-}, 1000 / fps);
+requestAnimationFrame(repeatOften);
+}
 
 setInterval(function() {
     showFPS();
@@ -31,4 +36,14 @@ function debug() {
     if (debugMode) {
         console.log("playerPos: " + playerPos.x + " " + playerPos.y);
     }
+}
+
+function loadGame(){
+    loadBlock(mapSize, mapSize).then(function(){
+        playerPos.x = mapSize / 2;
+        playerPos.y = mapSize / 2;
+        draw();
+        requestAnimationFrame(repeatOften);
+        document.querySelector("#loadScreen").style.display = "none";
+    });
 }

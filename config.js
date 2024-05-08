@@ -1,0 +1,26 @@
+const playerPos = {x: 20, y: 20};
+const cameraPos = {x: 0, y: 0};
+const mousePos = {x: 0, y: 0}
+const chunkSize = 4;
+const startPosMultiple = 1;
+const maxMapSize = 999 * 16;
+const seeDistance = 20;
+const mouseSeeDistance = 200;
+const player = document.querySelector("#player");
+const up = "KeyW";
+const down = "KeyS";
+const left = "KeyA";
+const right = "KeyD";
+const shift = "ShiftLeft";
+const speed = 0.1;
+const sprintSpeed = 2;
+const footsptepGrass = new Audio("sounds/footstep.wav");
+const footsptepWater1 = new Audio("sounds/footstep-water-1.wav");
+const footsptepWater2 = new Audio("sounds/footstep-water-2.wav");
+const birds = new Audio("sounds/birds.wav");
+
+const mapdiv = document.querySelector("#map");
+const max = 100;
+const min = 0;
+const step = 5;
+const size = 16;

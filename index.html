@@ -5,7 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>New map</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="img/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/icons/favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="mask-icon" href="img/icons/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="apple-mobile-web-app-title" content="Voraxis">
+    <meta name="application-name" content="Voraxis">
+    <meta name="msapplication-TileColor" content="#00a300">
+    <meta name="theme-color" content="#a1c53d">
+
+    <title>Voraxis</title>
 </head>
 <body>
     <div id="info" class="gui-element">
@@ -13,6 +24,10 @@
         <div id="data"></div>
     </div>
     <div id="screen">
+        <div id="loadScreen">
+            <img src="./img/icons/logo.png">
+            <div id="loadBar"><span id="loadBarSpan"></span></div>
+        </div>
         <div id="fog"></div>
         <div id="display">
             <div id="world">
@@ -24,6 +39,7 @@
             </div>
         </div>
     </div>
+    <!-- <script type="text/javascript" src="./config.js"></script> -->
     <script src='./perlin.js'></script>
     <script type="text/javascript" src="./objects.js"></script>
     <script type="text/javascript" src="./generator.js"></script>

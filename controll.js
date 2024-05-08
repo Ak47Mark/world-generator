@@ -1,9 +1,9 @@
-const playerPos = {x: 20, y: 20};
+const playerPos = {x: 8, y: 8};
 const cameraPos = {x: 0, y: 0};
 const mousePos = {x: 0, y: 0}
-const chunkSize = 4;
+const chunkSize = 16;
 const startPosMultiple = 1;
-const maxMapSize = 999 * 16;
+const maxMapSize = 100;
 const seeDistance = 20;
 const mouseSeeDistance = 200;
 const player = document.querySelector("#player");
@@ -89,15 +89,15 @@ function movement() {
     }
   }
   if (downKeyPressed) {
-    if(playerPos.x < maxMapSize){
+    if(playerPos.x < maxMapSize + chunkSize - 1){
       playerPos.x += walkspeed;     //le
     }
-    if(playerPos.y < maxMapSize){
+    if(playerPos.y < maxMapSize + chunkSize - 1){
       playerPos.y += walkspeed;
     }
   }
   if (leftKeyPressed) {
-    if(playerPos.y < maxMapSize ){
+    if(playerPos.y < maxMapSize + chunkSize - 1){
       playerPos.y += walkspeed;    //bal
     }
     if(playerPos.x > 1){
@@ -108,7 +108,7 @@ function movement() {
     if(playerPos.y > 1){
       playerPos.y -= walkspeed;   //jobb
     }
-    if(playerPos.x < maxMapSize){
+    if(playerPos.x < maxMapSize + chunkSize - 1){
       playerPos.x += walkspeed;
     }
   }
@@ -124,8 +124,8 @@ function movement() {
     footsptepGrass.pause();
   }
 
-  player.style.left = Math.round(playerPos.x*32) + "px";
-  player.style.top = Math.round(playerPos.y*32) + "px";
+  player.style.left = Math.round(playerPos.x*32) + 40 + "px";
+  player.style.top = Math.round(playerPos.y*32) + 40 + "px";
 }
 
 function extendMap(){
