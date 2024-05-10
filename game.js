@@ -12,6 +12,7 @@ function repeatOften() {
     cameraPosition();
     showInfo();
     debug();
+    mouseEvent();   
     fpsCounter++;
 requestAnimationFrame(repeatOften);
 }
@@ -46,4 +47,10 @@ function loadGame(){
         requestAnimationFrame(repeatOften);
         document.querySelector("#loadScreen").style.display = "none";
     });
+}
+
+function mouseEvent(){
+    if(isMouseDown){
+        console.log(deltaTime(mouseDownTime, Date.now()));
+    }
 }

@@ -1,9 +1,9 @@
-const playerPos = {x: 8, y: 8};
+const playerPos = {x: 0, y: 0};
 const cameraPos = {x: 0, y: 0};
 const mousePos = {x: 0, y: 0}
 const chunkSize = 16;
 const startPosMultiple = 1;
-const maxMapSize = 100;
+const maxMapSize = 50;
 const seeDistance = 20;
 const mouseSeeDistance = 200;
 const player = document.querySelector("#player");
@@ -33,7 +33,7 @@ playerPos.x = playerPos.x * startPosMultiple;
 playerPos.y = playerPos.y * startPosMultiple;
 
 document.addEventListener("keydown", function(event) {
-  birds.play();
+birds.play();
 
   if (event.code === left) {
     leftKeyPressed = true;
@@ -114,7 +114,7 @@ function movement() {
   }
 
   if( upKeyPressed || downKeyPressed || leftKeyPressed || rigtKeyPressed){
-    if(map[Math.floor(playerPos.y)][Math.floor(playerPos.x)].weight > 1){
+    if(map[Math.floor(playerPos.y)][Math.floor(playerPos.x)].weight > 0){
       footsptepGrass.play();
     }else{
       footsptepWater1.play();
@@ -124,8 +124,9 @@ function movement() {
     footsptepGrass.pause();
   }
 
-  player.style.left = Math.round(playerPos.x*32) + 40 + "px";
-  player.style.top = Math.round(playerPos.y*32) + 40 + "px";
+  player.style.zIndex = Math.ceil(pythagoras(Math.ceil(playerPos.x), Math.ceil(playerPos.y)));
+  player.style.left = Math.round(playerPos.x*34) + "px";
+  player.style.top = Math.round(playerPos.y*34) + "px";
 }
 
 function extendMap(){
@@ -159,10 +160,53 @@ function generateCircleCoordinates(x, y, distance) {
 }
 
 let screen = document.getElementById('screen');
+let mapscreen = document.getElementById('map');
 screen.addEventListener('mousemove', function(event) {
     mousePos.x = event.clientX;
     mousePos.y = event.clientY;
 });
+
+let mouseDownTime = 0;
+let isMouseDown = false;
+
+mapscreen.addEventListener('mousedown', function(event) {
+  isMouseDown = true;
+  mouseDownTime = Date.now();
+  let target = event.target;
+  try{
+    x = target.parentElement.attributes['x'].value;
+    y = target.parentElement.attributes['y'].value;
+  }catch(e){
+    console.error(target.parentElement);
+    x = 999;
+    y = 999;
+  }
+    let distance = Math.sqrt((playerPos.x - x) ** 2 + (playerPos.y - y) ** 2);
+  if (distance < 5) {
+    map[y][x].objectID = null;
+    draw();
+  }
+  console.log(distance);
+  console.log(x, y);
+});
+
+document.addEventListener('mouseup', function() {
+  isMouseDown = false;
+  let mouseUpTime = Date.now();
+  console.log(deltaTime(mouseDownTime, mouseUpTime));
+});
+
+function deltaTime(then, now){
+  return (now - then) / 1000;
+}
+
+function destroyBlock(x, y, time){
+  let distance = Math.sqrt((playerPos.x - x) ** 2 + (playerPos.y - y) ** 2);
+  if (distance < 5) {
+    map[y][x].objectID = null;
+    draw();
+  }
+}
 
 function cameraPosition() {
   let player = document.getElementById('player').getBoundingClientRect();

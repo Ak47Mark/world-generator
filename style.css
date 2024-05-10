@@ -47,7 +47,6 @@ body{
     height: 32px;
     min-width: 32px;
     background-size: cover;
-    border: 1px solid #ffffff00;
 }
 
 .block:hover{
@@ -110,7 +109,7 @@ body{
     background-image: url(img/sand.png);
 }
 
-.tallgrass::before{
+.tallgrass{
     content: "";
     margin-top: -43px;
     margin-left: -25px;
@@ -124,10 +123,30 @@ body{
     transform: rotateX(0deg) rotateZ(315deg);
 }
 
-.tree::before{
-    content: "";
-    margin-top: -284px;
-    margin-left: -204px;
+.tree,
+.tallgrass{
+    /* background-image: none !important; */
+    /* background-color: red; */
+}
+
+/*
+    right: 20px;
+    bottom: 40px;
+    background-image: url(img/Grass.webp);
+    background-color: #ab1e1eb3;
+    height: 80px;
+    width: 40px;
+*/
+
+.object{
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    display: block;
+    position: relative;
+    transform: rotateZ(315deg);
+}
+
+.tree{
     background-image: url(img/tree.webp);
     height: 370px;
     width: 210px;
@@ -148,7 +167,8 @@ body{
 }
 
 .block span{
-    display: none;
+    display: block;
+    position: relative;
 }
 
 .line{

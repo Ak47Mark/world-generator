@@ -31,8 +31,49 @@ function draw(){
     mapdiv.innerHTML = drawmap;
 }
 
+function pythagoras(x,y){
+    return Math.sqrt(x * x + y * y);
+}
+
 function createBlockDOM(x, y){
-    return "<div x='"+x+"' y='"+y+"' class='block "+toType(x,y)+" "+toObject(x, y)+"'><span></span></div>";
+    let z = Math.round(pythagoras(x,y));
+    let object = objectGenerator(x,y);
+    return "<div x='"+x+"' y='"+y+"' class='block "+toType(x,y)+"'>"+object+"</div>";
+}
+
+function objectGenerator(x, y){
+    let object = toObject(x, y);
+    if(object == ""){
+        return "";
+    }
+
+    let [origoX, origoY] = rotatePoint(0,0,object.width / 2, object.height / 2, 45);
+    console.log(object.name,origoX, origoY);
+
+    return "<span class='object' style="+
+    "'z-index: "+Math.round(pythagoras(x,y))+";"+
+    "right: "+object.width+"px;"+
+    "bottom: "+(object.height + Math.round(origoX))+"px;"+
+    "width: "+object.width+"px;"+
+    "height: "+object.height * 2+"px;"+
+    "background-image: url(img/"+object.image+");"+
+    "'></span>";
+
+}
+
+function rotatePoint(x, y, centerX, centerY, angleInDegrees = 45) {
+    x -= centerX;
+    y -= centerY;
+
+    var angleInRadians = angleInDegrees * Math.PI / 180;
+
+    var xNew = x * Math.cos(angleInRadians) - y * Math.sin(angleInRadians);
+    var yNew = x * Math.sin(angleInRadians) + y * Math.cos(angleInRadians);
+
+    xNew += centerX;
+    yNew += centerY;
+
+    return [xNew, yNew];
 }
 
 function toType(x, y){
@@ -78,7 +119,7 @@ function toObject(x, y){
 
     for (var i = 0; i < objtype.length; i++) {
         if (objtype[i].id == object) {
-            return objtype[i].name;
+            return objtype[i];
         }
     }
 }
