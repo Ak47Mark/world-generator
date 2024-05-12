@@ -3,6 +3,7 @@ const max = 100;
 const min = 0;
 const step = 5;
 const size = 16;
+const blockSize = 32; 
 const map = {};
 
 var plus = 0;
@@ -47,15 +48,17 @@ function objectGenerator(x, y){
         return "";
     }
 
-    let [origoX, origoY] = rotatePoint(0,0,object.width / 2, object.height / 2, 45);
+    let height = object.height * 2;
+    let width = object.width;
+    let [origoX, origoY] = rotatePoint(width/2 ,0 ,width/2, height/2, 315);
     console.log(object.name,origoX, origoY);
 
-    return "<span class='object' style="+
-    "'z-index: "+Math.round(pythagoras(x,y))+";"+
-    "right: "+object.width+"px;"+
-    "bottom: "+(object.height + Math.round(origoX))+"px;"+
-    "width: "+object.width+"px;"+
-    "height: "+object.height * 2+"px;"+
+    return "<span class='object' style='"+
+    "z-index: "+Math.round(pythagoras(x,y) - 1)+";"+
+    "left: -"+(width - blockSize - origoX)+"px;"+
+    "top: -"+(height - blockSize - origoY) +"px;"+
+    "width: "+width+"px;"+
+    "height: "+height+"px;"+
     "background-image: url(img/"+object.image+");"+
     "'></span>";
 
