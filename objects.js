@@ -9,7 +9,7 @@ var objtype = [
         "maxWeight": 50,
         "chance": 0.005,
         "collision": false,
-        "strength" : 10
+        "strength" : 2000
     },
     {
         "id": 2,
@@ -19,9 +19,9 @@ var objtype = [
         "width": 45,
         "minWeight": 2,
         "maxWeight": 50,
-        "chance": 0.02,
+        "chance": 0.04,
         "collision": true,
-        "strength" : 2000
+        "strength" : 20
     },
     {
         "id": 3,
@@ -31,7 +31,7 @@ var objtype = [
         "width": 45,
         "minWeight": 2,
         "maxWeight": 50,
-        "chance": 0.01,
+        "chance": 0.001,
         "collision": true,
         "strength" : 5000
     },

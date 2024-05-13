@@ -51,6 +51,6 @@ function loadGame(){
 
 function mouseEvent(){
     if(isMouseDown){
-        console.log(deltaTime(mouseDownTime, Date.now()));
+        hitObject();
     }
 }
