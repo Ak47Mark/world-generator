@@ -19,6 +19,7 @@ const footsptepWater1 = new Audio("sounds/footstep-water-1.wav");
 const footsptepWater2 = new Audio("sounds/footstep-water-2.wav");
 const birds = new Audio("sounds/birds.wav");
 const hit = new Audio("sounds/hit.wav");
+const pop = new Audio("sounds/pop.wav");
 let targetObject = null;
 
 birds.loop = true;
@@ -127,7 +128,7 @@ function movement() {
     footsptepGrass.pause();
   }
 
-  player.style.zIndex = Math.ceil(pythagoras(Math.ceil(playerPos.x), Math.ceil(playerPos.y)));
+  player.style.zIndex = Math.round(pythagoras((playerPos.x), (playerPos.y)));
   player.style.left = Math.round(playerPos.x*34) + "px";
   player.style.top = Math.round(playerPos.y*34) + "px";
 }
@@ -197,11 +198,11 @@ document.addEventListener('mouseup', function() {
   hit.pause();
   hit.currentTime = 0;
   let mouseUpTime = Date.now();
-  console.log(deltaTime(mouseDownTime, mouseUpTime));
 });
 
 function destroyBlock(x, y){
   map[y][x].objectID = null;
+  pop.play();
   draw();
 }
 
@@ -214,28 +215,20 @@ function setTargetObject(x, y, objectId){
 
 function hitObject(){
   var dTime = deltaTime(mouseDownTime, Date.now());
-  console.log(dTime);
   if(targetObject == null){
     return;
   }
   let object = objtype.find(obj => obj.id == targetObject.objectId);
-  if(dTime > object.strength){
+  if(dTime > object.strength && targetObject != null){
     hit.pause();
     hit.currentTime = 0;
     destroyBlock(targetObject.x, targetObject.y);
+    targetObject = null;
   }
 }
 
 function deltaTime(then, now){
   return (now - then);
-}
-
-function destroyBlock(x, y, time){
-  let distance = Math.sqrt((playerPos.x - x) ** 2 + (playerPos.y - y) ** 2);
-  if (distance < 5) {
-    map[y][x].objectID = null;
-    draw();
-  }
 }
 
 function cameraPosition() {

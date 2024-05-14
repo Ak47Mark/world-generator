@@ -15,19 +15,14 @@ draw();
 function draw(){
     let drawmap = ""
     for (var y = Object.keys(map).sort((a, b) => a-b )[0]; y < Object.keys(map).sort((a, b) => a-b ).reverse()[0]; y++) {
-       // try{
-
-            let row = "<div class='line' y='"+y+"'>"
-            let firstKey =  0;//Object.keys(map[y]).sort((a, b) => a-b )[0];
-            let lastKey = Object.keys(map[y]).sort((a, b) => a-b ).reverse()[0];
-            for (var x = firstKey; x < lastKey; x++) {
-                row += createBlockDOM(x, y);
-            }
-            row += "</div>";
-            drawmap += row;
-        /*}catch(e){
-            console.log("Error:", map[y][x]);
-        }*/
+        let row = "<div class='line' y='"+y+"'>"
+        let firstKey =  0;//Object.keys(map[y]).sort((a, b) => a-b )[0];
+        let lastKey = Object.keys(map[y]).sort((a, b) => a-b ).reverse()[0];
+        for (var x = firstKey; x < lastKey; x++) {
+            row += createBlockDOM(x, y);
+        }
+        row += "</div>";
+        drawmap += row;
     }
     mapdiv.innerHTML = drawmap;
 }
@@ -51,7 +46,6 @@ function objectGenerator(x, y){
     let height = object.height * 2;
     let width = object.width;
     let [origoX, origoY] = rotatePoint(width/2 ,0 ,width/2, height/2, 315);
-    console.log(object.name,origoX, origoY);
 
     return "<span class='object' style='"+
     "z-index: "+Math.round(pythagoras(x,y) - 1)+";"+
@@ -84,7 +78,7 @@ function toType(x, y){
     try{
         weight = map[y][x].weight;      
     }catch(e){
-        console.log("Error:", map[y][x]);
+        console.error("Error:", map[y][x]);
         weight = "error";
     }
     if(weight == "error"){
@@ -113,7 +107,7 @@ function toObject(x, y){
     try{
         object = map[y][x].objectID;
     }catch(e){
-        console.log("Error:", map[y][x]);
+        console.error("Error:", map[y][x]);
         object = null;
     }
     if(object == null){
